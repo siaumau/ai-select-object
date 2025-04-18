@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>圖片物件標註語選取</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <div class="container max-w-6xl mx-auto p-6">
+        <h1 class="text-2xl font-bold mb-6 text-gray-800">圖像物件檢測與標註</h1>
+        
+        <!-- 图片上传区域 -->
+        <div class="mb-6">
+            <label class="block mb-2 text-sm font-medium text-gray-700">
+                選擇圖片進行分析選取
+            </label>
+            <input
+                type="file"
+                accept="image/*"
+                id="imageInput"
+                class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+            />
+        </div>
+        
+        <!-- 检测按钮 -->
+        <button
+            id="detectButton"
+            disabled
+            class="mb-6 px-4 py-2 bg-blue-600 text-white font-medium rounded-lg disabled:bg-gray-400 disabled:cursor-not-allowed hover:bg-blue-700 transition-colors"
+        >
+           開始檢測物件
+        </button>
+        
+        <!-- 错误信息 -->
+        <div id="errorMessage" class="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded hidden"></div>
+        
+        <!-- 图片和检测结果显示区域 -->
+        <div id="imageContainer" class="relative inline-block border border-gray-300 rounded-lg overflow-hidden hidden">
+            <img id="uploadedImage" src="" alt="已上传图片" class="max-w-full h-auto" />
+            <canvas id="detectionCanvas" class="absolute top-0 left-0 w-full h-full pointer-events-none"></canvas>
+        </div>
+        
+        <!-- 检测结果列表 -->
+        <div id="resultsContainer" class="mt-6 hidden">
+            <h2 class="text-xl font-semibold mb-3 text-gray-800">檢測結果</h2>
+            <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                <table class="w-full text-sm text-left text-gray-700">
+                    <thead class="text-gray-700 bg-gray-100">
+                        <tr>
+                            <th class="px-4 py-2 rounded-tl-lg">類別</th>
+                            <th class="px-4 py-2">可信度</th>
+                            <th class="px-4 py-2 rounded-tr-lg">位置</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsTableBody">
+                        <!-- 结果将在这里动态添加 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>

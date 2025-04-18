@@ -60,42 +60,50 @@
      
      // 调用OpenRouter API进行物体检测
      function detectObjects(base64Image) {
-         // 使用fetch调用API
-         fetch('https://api.openrouter.ai/api/v1/vision/detect', {
+         // 使用本地代理伺服器
+         const proxyUrl = 'http://localhost:4001/api/detect';
+         
+         // 顯示加載狀態
+         showError("正在處理圖片...");
+         
+         // 發送請求到代理伺服器
+         fetch(proxyUrl, {
              method: 'POST',
              headers: {
-                 'Content-Type': 'application/json',
-                 'Authorization': 'Bearer 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'
+                 'Content-Type': 'application/json'
              },
              body: JSON.stringify({
                  image: base64Image,
-                 detect_classes: ['person', 'car', 'building', 'object'] // 自定义检测类别
+                 detect_classes: ['person', 'car', 'building', 'object']
              })
          })
          .then(response => {
              if (!response.ok) {
-                 throw new Error(`API請求失敗: ${response.status}`);
+                 throw new Error(`請求失敗: ${response.status}`);
              }
              return response.json();
          })
          .then(data => {
-             // 处理检测结果
+             // 處理檢測結果
              const detections = data.detections || [];
              if (detections.length > 0) {
-                 // 绘制检测框和标签
+                 // 繪製檢測框和標籤
                  drawDetections(detections);
                  
-                 // 显示检测结果列表
+                 // 顯示檢測結果列表
                  displayResultsList(detections);
+                 // 清除錯誤訊息
+                 hideError();
              } else {
                  showError("未檢測到任何物體");
              }
          })
          .catch(error => {
+             console.error('Error:', error);
              showError(`檢測失敗: ${error.message}`);
          })
          .finally(() => {
-             // 恢复按钮状态
+             // 恢復按鈕狀態
              detectButton.textContent = '開始鑑測物件';
              detectButton.disabled = false;
          });
